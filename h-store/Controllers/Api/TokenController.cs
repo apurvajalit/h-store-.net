@@ -41,17 +41,25 @@ namespace h_store.Controllers.Api
         
         public HttpResponseMessage token(string assertion)
         {
-            if (!(CheckXSRFToken(assertion)))
+            User user = null;
+            if (!(CheckXSRFToken(assertion))) 
          
             {
                 HttpError err = new HttpError("Bad token for validation");
                 return Request.CreateResponse(HttpStatusCode.Unauthorized, err);
             }
 
+            if((user = (User)(System.Web.HttpContext.Current.Session["user"])) == null){
+                {
+                    HttpError err = new HttpError("User not logged in");
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized, err);
+                }
+            }
+
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             string issuer = "00000000-0000-0000-0000-000000000000";
             string audience = "https://hypothes.is";
-            User user = (User)(System.Web.HttpContext.Current.Session["user"]);
+            
 
             IEnumerable<System.Security.Claims.Claim> claims = new List<System.Security.Claims.Claim>{
                 new System.Security.Claims.Claim("userId",user.username),

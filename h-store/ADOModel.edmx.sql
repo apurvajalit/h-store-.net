@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/27/2015 14:47:00
+-- Date Created: 05/29/2015 10:52:51
 -- Generated from EDMX file: C:\Users\apurva.jalit\work\h-store\h-store\ADOModel.edmx
 -- --------------------------------------------------
 
@@ -42,12 +42,13 @@ CREATE TABLE [dbo].[Annotations] (
     [updated] nvarchar(max)  NOT NULL,
     [target] nvarchar(max)  NOT NULL,
     [created] nvarchar(max)  NOT NULL,
-    [text] nvarchar(max)  NOT NULL,
-    [tags] nvarchar(max)  NOT NULL,
+    [text] nvarchar(max)  NULL,
+    [tags] nvarchar(max)  NULL,
     [uri] nvarchar(max)  NOT NULL,
     [document] nvarchar(max)  NOT NULL,
     [consumer] nvarchar(max)  NOT NULL,
     [permissions] nvarchar(max)  NOT NULL,
+    [user] nvarchar(max)  NOT NULL,
     [UserId] int  NOT NULL
 );
 GO
@@ -58,8 +59,7 @@ CREATE TABLE [dbo].[Users] (
     [username] nvarchar(max)  NOT NULL,
     [email] nvarchar(max)  NOT NULL,
     [password] nvarchar(max)  NOT NULL,
-    [pwd] nvarchar(max),
-    [subscriptions] nvarchar(max)
+    [subscriptions] nvarchar(max)  NULL
 );
 GO
 

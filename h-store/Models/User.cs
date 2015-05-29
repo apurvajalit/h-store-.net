@@ -6,13 +6,17 @@ using System.Web;
 
 namespace h_store
 {
+
     public partial class User
     {//This class adds the methods to check users against the DB
-
+        public string pwd { get; set; }
+        public string code { get; set; }
+        public string hashkey { get; set; }
         private void FillAllDetailsFromGivenUser(User user){
             Id = user.Id;
             email = user.email;
             subscriptions = user.subscriptions;
+            password = user.password;
         }
         public bool CheckIfUserExistsinDB()
         {
@@ -128,10 +132,40 @@ namespace h_store
             return 0;
         }
 
+        public int UpdateUser(bool DBCheckDone = false)
+        {
+            if (DBCheckDone || CheckIfUserExistsinDB())
+            {
+                DBContextHandler dbContextHandler = new DBContextHandler();
+                dbContextHandler.CreateDataContext();
+                try
+                {
+
+                    using (dbContextHandler.GetDataContext())
+                    {
+                        dbContextHandler.context.Entry(this).State = EntityState.Modified;
+                        dbContextHandler.context.SaveChanges();
+
+                    }
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    dbContextHandler.DisposeContext();
+                }
+                return Id;
+            }
+            return 0;
+        }
+
         public void DeleteUser()
         {
-            if (!CheckIfUserExistsinDB())
+            if (CheckIfUserExistsinDB() && password == pwd)
             {
+
                 DBContextHandler dbContextHandler = new DBContextHandler();
                 dbContextHandler.CreateDataContext();
                 try

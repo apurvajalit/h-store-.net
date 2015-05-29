@@ -4,55 +4,55 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ADOModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Annotations">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="updated" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="target" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="created" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="text" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="tags" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="uri" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="document" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="consumer" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="permissions" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Users">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="username" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="email" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="password" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="pwd" Type="nvarchar(max)" />
-          <Property Name="subscriptions" Type="nvarchar(max)" />
-        </EntityType>
-        <Association Name="FK_AnnotationUser">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Annotations" Type="Self.Annotations" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Annotations">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="ADOModelStoreContainer">
-          <EntitySet Name="Annotations" EntityType="Self.Annotations" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_AnnotationUser" Association="Self.FK_AnnotationUser">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Annotations" EntitySet="Annotations" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema></edmx:StorageModels>
+    <Schema Namespace="ADOModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="ADOModelStoreContainer">
+    <EntitySet Name="Annotations" EntityType="ADOModel.Store.Annotations" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="ADOModel.Store.Users" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="AnnotationUser" Association="ADOModel.Store.AnnotationUser">
+      <End Role="Annotation" EntitySet="Annotations" />
+      <End Role="User" EntitySet="Users" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Annotations">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="updated" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="target" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="created" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="text" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="tags" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="uri" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="document" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="consumer" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="permissions" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="user" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="username" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="password" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="subscriptions" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <Association Name="AnnotationUser">
+    <End Role="Annotation" Type="ADOModel.Store.Annotations" Multiplicity="*" />
+    <End Role="User" Type="ADOModel.Store.Users" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Annotation">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ADOModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
@@ -72,12 +72,13 @@
           <Property Name="updated" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="target" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="created" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="text" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="tags" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="text" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="tags" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="uri" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="document" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="consumer" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="permissions" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="user" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="User" Relationship="ADOModel.AnnotationUser" FromRole="Annotation" ToRole="User" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
         </EntityType>
@@ -89,9 +90,8 @@
           <Property Name="username" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="email" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Name="password" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="Annotations" Relationship="ADOModel.AnnotationUser" FromRole="User" ToRole="Annotation" />
-          <Property Name="pwd" Type="String" Unicode="true" FixedLength="false" MaxLength="Max" />
           <Property Name="subscriptions" Type="String" Unicode="true" FixedLength="false" MaxLength="Max" />
+          <NavigationProperty Name="Annotations" Relationship="ADOModel.AnnotationUser" FromRole="User" ToRole="Annotation" />
         </EntityType>
         <Association Name="AnnotationUser">
           <End Type="ADOModel.Annotation" Role="Annotation" Multiplicity="*" />
@@ -124,6 +124,7 @@
           <ScalarProperty Name="document" ColumnName="document" />
           <ScalarProperty Name="consumer" ColumnName="consumer" />
           <ScalarProperty Name="permissions" ColumnName="permissions" />
+          <ScalarProperty Name="user" ColumnName="user" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -135,7 +136,6 @@
           <ScalarProperty Name="username" ColumnName="username" />
           <ScalarProperty Name="email" ColumnName="email" />
           <ScalarProperty Name="password" ColumnName="password" />
-          <ScalarProperty Name="pwd" ColumnName="pwd" />
           <ScalarProperty Name="subscriptions" ColumnName="subscriptions" />
         </MappingFragment>
       </EntityTypeMapping>

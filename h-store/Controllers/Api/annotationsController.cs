@@ -73,8 +73,8 @@ namespace h_store.Controllers
             
             //annotationsList.Add(annotation);
             Annotation annotaionForDB = annotation.ToAnnotation();
-            annotaionForDB.User = (User)(System.Web.HttpContext.Current.Session["user"]);
-            annotaionForDB.UserId = annotaionForDB.User.Id;
+            annotaionForDB.UserId = ((User)(System.Web.HttpContext.Current.Session["user"])).Id;
+            
             dbContextHandler.CreateDataContext();
             try
             {
@@ -94,7 +94,7 @@ namespace h_store.Controllers
             {
                 dbContextHandler.DisposeContext();
             }
- 
+            annotation.id = annotaionForDB.Id;
             return annotation;
 
         }
@@ -133,10 +133,11 @@ namespace h_store.Controllers
 
         [System.Web.Http.HttpPut]
         //[Route("api/Annotation/annotations/{id}")]
-        public ClientAnnotationData annotations(long id, [FromBody] ClientAnnotationData annotation)
+        public ClientAnnotationData annotations(long id, [FromBody] ClientAnnotationData clientAnnotationData)
         {
+            Annotation annotation = clientAnnotationData.ToAnnotation();
             DBContextHandler dbContextHandler = new DBContextHandler();
-           // annotation.User = (User)(System.Web.HttpContext.Current.Session["user"]);
+            annotation.UserId = ((User)(System.Web.HttpContext.Current.Session["user"])).Id;
            // annotation.UserId = annotation.User.Id;
             dbContextHandler.CreateDataContext();
             try
@@ -158,7 +159,7 @@ namespace h_store.Controllers
                 dbContextHandler.DisposeContext();
             }
 
-            return annotation;
+            return clientAnnotationData;
         }
 
 

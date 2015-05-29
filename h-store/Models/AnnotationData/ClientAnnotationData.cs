@@ -31,10 +31,10 @@ namespace h_store.Models.AnnotationData
             text = annotation.text;
             tags = JsonConvert.DeserializeObject<string[]>(annotation.tags);
             uri = annotation.uri;
-            //user = annotation.User.username;
             document = JsonConvert.DeserializeObject<Document>(annotation.document);
             consumer = annotation.consumer;
             id = annotation.Id;
+            user = annotation.user;
             permissions = JsonConvert.DeserializeObject(annotation.permissions);
         }
 
@@ -57,7 +57,7 @@ namespace h_store.Models.AnnotationData
             annotation.consumer = this.consumer;
             annotation.Id = this.id;
             annotation.permissions = JsonConvert.SerializeObject(this.permissions);
-
+            annotation.user = this.user;
             return annotation;
         }
     }

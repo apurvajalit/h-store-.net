@@ -23,7 +23,6 @@ namespace h_store
         public string username { get; set; }
         public string email { get; set; }
         public string password { get; set; }
-        public string pwd { get; set; }
         public string subscriptions { get; set; }
     
         public virtual ICollection<Annotation> Annotations { get; set; }

@@ -24,6 +24,7 @@ namespace h_store
         public string document { get; set; }
         public string consumer { get; set; }
         public string permissions { get; set; }
+        public string user { get; set; }
         public int UserId { get; set; }
     
         public virtual User User { get; set; }
